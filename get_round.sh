@@ -1,20 +1,46 @@
 #!/bin/bash
 
-clear
+echo ""
 
-echo "welcome to get_rounds.sh"
+echo "Welcome to GET_ROUNDS!"
 
 echo ""
 
-read -p "Do you want to rip a new training video? (y/n): " rip_video
+while true; do
+    read -p "Do you want to rip a new training video? (y/n): " rip_video
 
-if [ $rip_video == "y" ]
-then
+    if [ $rip_video == "y" ]; then
+        read -p "1) 1080 or 2) 720: " video_quality
 
-    read -p "Enter the URL of the new training video: " video_url
-    yt-dlp -f b -S "height:720" -o 720.mp4 ${video_url}
+        if [ $video_quality == "1" ]; then
+            read -p "Enter the URL of the new training video: " video_url
 
-fi
+            if yt-dlp -q -S ext:mp4:m4a -f 'bv*[height=1080]+ba' -o 720.mp4 ${video_url}; then
+                break
+            else
+                clear
+                echo "Error: failed to download video. The video may not be available in 1080p format."
+                echo ""
+            fi
+
+        else
+            read -p "Enter the URL of the new training video: " video_url
+
+            if yt-dlp -q -S ext:mp4:m4a -f 'bv*[height=720]+ba' -o 720.mp4 ${video_url}; then
+                break
+            else
+                clear
+                echo "Error: failed to download video. The video may not be available in 720p format."
+                echo ""
+            fi
+
+        fi
+
+    else
+        break
+    fi
+done
+
 
 
 read -p "Enter the map name: " map_name
