@@ -2,6 +2,18 @@
 
 declare -g rip_name="training_video"
 
+intro() {
+
+    echo "
+                   __                                               .___         ._.
+   ____    ____  _/  |_          _______   ____   __ __   ____    __| _/  ______ | |
+  / ___\ _/ __ \ \   __\         \_  __ \ /  _ \ |  |  \ /    \  / __ |  /  ___/ | |
+ / /_/  >\  ___/  |  |            |  | \/(  <_> )|  |  /|   |  \/ /_/ |  \___ \   \|
+ \___  /  \___  > |__|    ______  |__|    \____/ |____/ |___|  /\____ | /____  >  __
+/_____/       \/         /_____/                             \/      \/      \/   \/"
+
+}
+
 get_training_video() {
 
     while true; do
@@ -69,28 +81,30 @@ split_video() {
         echo "New clip: ${output_file_arr[$i]}!"
     done
 }
+
+
 clear
-
-echo "
-                   __                                               .___         ._.
-   ____    ____  _/  |_          _______   ____   __ __   ____    __| _/  ______ | |
-  / ___\ _/ __ \ \   __\         \_  __ \ /  _ \ |  |  \ /    \  / __ |  /  ___/ | |
- / /_/  >\  ___/  |  |            |  | \/(  <_> )|  |  /|   |  \/ /_/ |  \___ \   \|
- \___  /  \___  > |__|    ______  |__|    \____/ |____/ |___|  /\____ | /____  >  __
-/_____/       \/         /_____/                             \/      \/      \/   \/"
-
+intro
 
 echo ""
 
+options=("Download new training video" "Clip video")
 
-get_training_video
-
-echo ""
-
-echo "Video selected: $rip_name"
-
-echo ""
-
-split_video
-
-
+# Display menu and prompt for input
+select opt in "${options[@]}"; do
+    case $opt in
+    "Download new training video")
+        get_training_video
+        echo ""
+        split_video
+        break
+        ;;
+    "Clip video")
+        split_video
+        break
+        ;;
+    *)
+        echo "Invalid option. Please choose again."
+        ;;
+    esac
+done
